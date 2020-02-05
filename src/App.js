@@ -11,15 +11,15 @@ function App() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   //====== Dog Pictures ======
-  // useEffect(() => {
-  //   axios
-  //     .get("https://dog.ceo/api/breeds/image/random")
-  //     .then(response => {
-  //       console.log(response);
-  //       setDogPic(response.data.message);
-  //     })
-  //     .catch(error => console.log(error));
-  // }, []);
+  useEffect(() => {
+    axios
+      .get("https://dog.ceo/api/breeds/image/random")
+      .then(response => {
+        console.log(response);
+        setDogPic(response.data.message);
+      })
+      .catch(error => console.log(error));
+  }, []);
 
   //====== Searchbar ======
   useEffect(() => {
@@ -32,11 +32,16 @@ function App() {
     fetchData();
   }, [query]);
 
+  //====== Mouse over tracker ======
   useEffect(() => {
     function setFromEvent(event) {
       setPosition({ x: event.clientX, y: event.clientY });
-      window.addEventListener("mousemove", setFromEvent);
     }
+    window.addEventListener("mousemove", setFromEvent);
+
+    return () => {
+      window.removeEventListener("mousemove", setFromEvent);
+    };
   }, []);
 
   return (
